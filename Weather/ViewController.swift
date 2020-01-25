@@ -42,5 +42,40 @@ class ViewController: UIViewController {
             
         }.resume()
     }
+    
+    @IBAction func findCityButtonPressed(_ sender: Any) {
+        showAlert(with: "City", "Enter title name")
+    }
+    
+    
 }
 
+// MARK : - Private Methods
+extension ViewController {
+    private func showAlert(with title: String?, _ message: String?) {
+        let alert = UIAlertController(title: title, message: message, preferredStyle: .alert)
+        
+        let cancelButton = UIAlertAction(title: "Cancel", style: .cancel, handler: nil)
+        let okButton = UIAlertAction(title: "Ok", style: .default) { alertAction in
+            if let textField = alert.textFields?.first {
+                self.getWeatherForCity(city: textField.text ?? "")
+            }
+        }
+        
+        alert.addTextField { textField in
+            textField.textAlignment = .center
+            textField.contentVerticalAlignment = .center
+            textField.contentHorizontalAlignment = .center
+            textField.borderStyle = .roundedRect
+            textField.placeholder = "Enter city"
+        }
+        
+        alert.addAction(cancelButton)
+        alert.addAction(okButton)
+        present(alert, animated: true, completion: nil)
+    }
+    
+    private func getWeatherForCity(city: String) {
+        print(city)
+    }
+}
