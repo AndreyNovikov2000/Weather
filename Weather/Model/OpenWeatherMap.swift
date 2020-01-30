@@ -26,4 +26,6 @@ struct Weather: Decodable {
 
 struct Sys: Decodable {
     let country: String
+    let sunrise: Int
+    let sunset: Int
 }

@@ -24,7 +24,7 @@ class ViewController: UIViewController {
         super.viewDidLoad()
         
         networkFetcher.delegate = self
-        updateUI(with: "brookline")
+        updateUI(with: "brooklin")
         setupActivityIndicator()
         
         
@@ -145,6 +145,17 @@ extension ViewController {
        return UIImage(named: imageName) ?? UIImage()
     }
     
+    // TIME
+    private func getCurrentTime(sunrise: Int, sunset: Int) -> Bool {
+        var nightTime = false
+        let nowTime = Date().timeIntervalSince1970
+        
+        if Int(nowTime) < sunrise || Int(nowTime) > sunset {
+            nightTime = true
+        }
+        
+        return nightTime
+    }
 }
 
 // MARK: - Public Methods
@@ -153,12 +164,21 @@ extension ViewController {
         
         let urlString = "https://api.openweathermap.org/data/2.5/weather?q=\(city),forecast?id=524901&appid=5ad2283b07a684c9b4541b10d1739494"
         activityIndicator.startAnimating()
+        
         networkFetcher.fetcData(urlString: urlString) { (weather) in
-            DispatchQueue.main.async {
-                self.imageView.image = self.getWetherIcon(condition: weather?.weather.first?.id ?? 0, nightTime: false)
+            DispatchQueue.main.async { [unowned self] in
                
-                print(weather?.sys.country ?? "")
-                print(self.convertableTemperature(country: weather?.sys.country, temperature: (weather?.main.temp) ?? 0))
+                guard let weather = weather else { return }
+                
+                //GET UIIMAGE
+                self.imageView.image = self.getWetherIcon(condition: weather.weather[0].id,
+                                                          nightTime: self.getCurrentTime(sunrise: weather.sys.sunrise, sunset: weather.sys.sunset))
+                
+                
+                
+                print(weather.sys.sunset, weather.sys.sunrise)
+                print(weather.sys.country)
+                print(self.convertableTemperature(country: weather.sys.country, temperature: (weather.main.temp)))
             }
         }
     }
@@ -167,13 +187,14 @@ extension ViewController {
 // MARK: - NetworkFetcherDelegate
 extension ViewController: NetworkFetcherDelegate {
     func networkFetcherDidSuccessRequesting() {
-        print("success")
+        print("networkFetcherDidSuccessRequesting success requesting")
         DispatchQueue.main.async {
             self.activityIndicator.stopAnimating()
         }
     }
     
     func networkFetcherDidFailedRequesting() {
+        print("networkFetcherDidFailedRequesting failed requesting")
         DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
             self.showInformationAlert(with: "Error", "No connecting internet")
         }
