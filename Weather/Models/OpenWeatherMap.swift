@@ -9,6 +9,7 @@
 struct OpenWeatherMap: Decodable {
     let name: String
     let main: Main
+    let wind: Wind
     let weather: [Weather]
     let dt: Int
     let sys: Sys
@@ -16,6 +17,11 @@ struct OpenWeatherMap: Decodable {
 
 struct Main: Decodable {
     let temp: Double
+    let humidity: Int
+}
+
+struct Wind: Decodable {
+    let speed: Double
 }
 
 struct Weather: Decodable {

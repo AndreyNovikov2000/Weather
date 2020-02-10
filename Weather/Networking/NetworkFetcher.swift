@@ -43,4 +43,31 @@ class NetworkFetcher {
             
         }
     }
+    
+    func fetcDataForFiveDays(urlString: String, complitionHendler: @escaping ((MainList?) -> Void)) {
+        
+        guard let url = URL(string: urlString) else { return }
+        
+        networkService.request(url: url) { (data, error) in
+            if let error = error {
+                print(error.localizedDescription)
+                self.delegate.networkFetcherDidFailedRequesting()
+                complitionHendler(nil)
+                return
+            }
+            guard let data = data else { return }
+            
+            do {
+                let weather = try JSONDecoder().decode(MainList.self, from: data)
+               // self.delegate.networkFetcherDidSuccessRequesting()
+                complitionHendler(weather)
+                
+            } catch let error {
+                print(error.localizedDescription)
+                complitionHendler(nil)
+                return
+            }
+            
+        }
+    }
 }

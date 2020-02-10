@@ -11,55 +11,68 @@ import UIKit
 class ViewController: UIViewController {
     
     // MARK: - IBOutlets
-    @IBOutlet weak var imageView: UIImageView!
+    @IBOutlet weak var mainStackView: UIStackView!
+    @IBOutlet weak var cityLabel: UILabel!
+    @IBOutlet weak var dateLabel: UILabel!
+    @IBOutlet weak var iconImageView: UIImageView!
+    @IBOutlet weak var temperatureLabel: UILabel!
+    
+    
+    @IBOutlet weak var sunriseLabel: UILabel!
+    @IBOutlet weak var sunsetLabel: UILabel!
+    @IBOutlet weak var windLabel: UILabel!
+    @IBOutlet weak var humidityLabel: UILabel!
     
     
     // MARK: - Private Properties
     private let baseUrlString = "https://api.openweathermap.org/data/2.5/weather?q=,forecast?id=524901&appid=5ad2283b07a684c9b4541b10d1739494"
     private let networkFetcher = NetworkFetcher()
-    private let activityIndicator = UIActivityIndicatorView()
     
-    // MARK: -
+    private let activityIndicator = UIActivityIndicatorView()
+    private let weatherCollectionView = WeatherCollectionView()
+    
+    // MARK: - Controllers Methods
     override func viewDidLoad() {
         super.viewDidLoad()
         
         networkFetcher.delegate = self
-        updateUI(with: "brooklin")
-        setupActivityIndicator()
+        updateUI(with: "almaty")
         
+        setupWeatherCollectionView()
+        setupActivityIndicator()
         
     }
     
     // MARK: - ABACtions Methods
     @IBAction func findCityButtonPressed(_ sender: Any) {
-        showAlert(with: "City", "Enter title name")
+        //showAlert(with: "City", "Enter title name")
     }
 }
 
 // MARK : - Private Methods
 extension ViewController {
     
-    private func showAlert(with title: String?, _ message: String?) {
-        let alert = UIAlertController(title: title, message: message, preferredStyle: .alert)
-        
-        let cancelButton = UIAlertAction(title: "Cancel", style: .cancel, handler: nil)
-        let okButton = UIAlertAction(title: "Ok", style: .default) { alertAction in
-            guard let text = alert.textFields?.first?.text else { return }
-            print(text)
-        }
-        
-        alert.addTextField { textField in
-            textField.textAlignment = .center
-            textField.contentVerticalAlignment = .center
-            textField.contentHorizontalAlignment = .center
-            textField.borderStyle = .roundedRect
-            textField.placeholder = "Enter city"
-        }
-        
-        alert.addAction(cancelButton)
-        alert.addAction(okButton)
-        present(alert, animated: true, completion: nil)
-    }
+    //    private func showAlert(with title: String?, _ message: String?) {
+    //        let alert = UIAlertController(title: title, message: message, preferredStyle: .alert)
+    //
+    //        let cancelButton = UIAlertAction(title: "Cancel", style: .cancel, handler: nil)
+    //        let okButton = UIAlertAction(title: "Ok", style: .default) { alertAction in
+    //            guard let text = alert.textFields?.first?.text else { return }
+    //            print(text)
+    //        }
+    //
+    //        alert.addTextField { textField in
+    //            textField.textAlignment = .center
+    //            textField.contentVerticalAlignment = .center
+    //            textField.contentHorizontalAlignment = .center
+    //            textField.borderStyle = .roundedRect
+    //            textField.placeholder = "Enter city"
+    //        }
+    //
+    //        alert.addAction(cancelButton)
+    //        alert.addAction(okButton)
+    //        present(alert, animated: true, completion: nil)
+    //    }
     
     private func showInformationAlert(with title: String?, _ message: String?) {
         let alert = UIAlertController(title: title, message: message, preferredStyle: .alert)
@@ -67,12 +80,6 @@ extension ViewController {
         
         alert.addAction(okAction)
         present(alert, animated: true, completion: nil)
-    }
-    
-    private func setupActivityIndicator() {
-        activityIndicator.frame = CGRect(x: 0, y: 0, width: 50, height: 50)
-        activityIndicator.center = view.center
-        view.addSubview(activityIndicator)
     }
 }
 
@@ -90,14 +97,16 @@ extension ViewController {
         return dateFormatter.string(from: weatherDate)
     }
     
+    
     // GET TEMPERATURE
-    private func convertableTemperature(country: String?, temperature: Double) -> Double {
+    private func convertableTemperature(country: String?, temperature: Double) -> String {
         if country == "US" {
-            return round(temperature * 1.8 - 459.67)
+            return  String(format: "%.0f", temperature * 1.8 - 459.67) + "°F"
         } else {
-            return round((temperature - 275.15))
+            return String(format: "%.0f", temperature - 275.15) + "°C"
         }
     }
+    
     
     // GET UIIMAGE
     private func getWetherIcon(condition: Int, nightTime: Bool) -> UIImage {
@@ -123,7 +132,7 @@ extension ViewController {
         //Snow
         case let (c, n) where c < 700 && n == false: imageName = "13d"
         case let (c, n) where c < 700 && n == true: imageName = "13n"
-        
+            
         //Atmosphere
         case let (c, n) where c < 800 && n == false: imageName = "50d"
         case let (c, n) where c < 800 && n == true: imageName = "50n"
@@ -142,10 +151,11 @@ extension ViewController {
         default: imageName = "none"
         }
         
-       return UIImage(named: imageName) ?? UIImage()
+        return UIImage(named: imageName) ?? UIImage()
     }
     
-    // TIME
+    
+    //GET CURRENT TIME
     private func getCurrentTime(sunrise: Int, sunset: Int) -> Bool {
         var nightTime = false
         let nowTime = Date().timeIntervalSince1970
@@ -158,29 +168,35 @@ extension ViewController {
     }
 }
 
-// MARK: - Public Methods
+// MARK: - Fetch data methods
 extension ViewController {
-    func updateUI(with city: String) {
+    private func updateUI(with city: String) {
         
         let urlString = "https://api.openweathermap.org/data/2.5/weather?q=\(city),forecast?id=524901&appid=5ad2283b07a684c9b4541b10d1739494"
         activityIndicator.startAnimating()
         
         networkFetcher.fetcData(urlString: urlString) { (weather) in
             DispatchQueue.main.async { [unowned self] in
-               
                 guard let weather = weather else { return }
-                
-                //GET UIIMAGE
-                self.imageView.image = self.getWetherIcon(condition: weather.weather[0].id,
-                                                          nightTime: self.getCurrentTime(sunrise: weather.sys.sunrise, sunset: weather.sys.sunset))
-                
-                
-                
-                print(weather.sys.sunset, weather.sys.sunrise)
-                print(weather.sys.country)
-                print(self.convertableTemperature(country: weather.sys.country, temperature: (weather.main.temp)))
+                self.loadDAataInUI(with: weather)
             }
         }
+    }
+    
+    private func loadDAataInUI(with weather: OpenWeatherMap) {
+        //GET MAIN UI
+        iconImageView.image = getWetherIcon(condition: weather.weather[0].id,
+                                                      nightTime: getCurrentTime(sunrise: weather.sys.sunrise,
+                                                                                     sunset: weather.sys.sunset))
+        temperatureLabel.text = convertableTemperature(country: weather.sys.country,temperature: weather.main.temp)
+        dateLabel.text = getTimeFromUnix(unixTime: weather.dt)
+        cityLabel.text = weather.name
+        
+        //GET DETAILS UI
+        sunsetLabel.text = "\(getTimeFromUnix(unixTime: weather.sys.sunset))"
+        sunriseLabel.text = "\(getTimeFromUnix(unixTime: weather.sys.sunrise))"
+        windLabel.text = "\(weather.wind.speed) m/s"
+        humidityLabel.text = "\(weather.main.humidity) %"
     }
 }
 
@@ -198,5 +214,24 @@ extension ViewController: NetworkFetcherDelegate {
         DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
             self.showInformationAlert(with: "Error", "No connecting internet")
         }
+    }
+}
+
+
+// MARK: - SetupUI
+extension ViewController {
+    private func setupActivityIndicator() {
+        activityIndicator.frame = CGRect(x: 0, y: 0, width: 50, height: 50)
+        activityIndicator.center = view.center
+        view.addSubview(activityIndicator)
+    }
+    
+    private func setupWeatherCollectionView() {
+        view.addSubview(weatherCollectionView)
+        
+        weatherCollectionView.leadingAnchor.constraint(equalTo: view.leadingAnchor).isActive = true
+        weatherCollectionView.trailingAnchor.constraint(equalTo: view.trailingAnchor).isActive = true
+        weatherCollectionView.topAnchor.constraint(equalTo: mainStackView.bottomAnchor, constant: 10).isActive = true
+        weatherCollectionView.heightAnchor.constraint(greaterThanOrEqualToConstant: 110).isActive = true
     }
 }

@@ -92,8 +92,13 @@ override func viewDidLoad() {
     }.resume()
 */
 
-/*
+/* 
+ https://api.openweathermap.org/data/2.5/weather?q=Almaty,forecast?id=524901&appid=5ad2283b07a684c9b4541b10d1739494 //requesting name
+ https://api.openweathermap.org/data/2.5/weather?lat=76.95&lon=43.25&appid=5ad2283b07a684c9b4541b10d1739494 // requesting lat lon
  
- "https://api.openweathermap.org/data/2.5/weather?q=Almaty,forecast?id=524901&appid=5ad2283b07a684c9b4541b10d1739494"
- 
+ https://api.openweathermap.org/data/2.5/forecast?q=Almaty&appid=5ad2283b07a684c9b4541b10d1739494 // requesting name for 5 days every 3 hour
+ https://api.openweathermap.org/data/2.5/forecast?lat=76.95&lon=43.25&appid=5ad2283b07a684c9b4541b10d1739494 // requesting lat lon for 5 days every 3 hour
  */
+
+
+
