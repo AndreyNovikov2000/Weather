@@ -14,5 +14,4 @@ class WeatherCollectionViewCell: UICollectionViewCell {
     @IBOutlet weak var weatherIconImageView: UIImageView!
     
     static let reusedID = "WetherCollectionViewCell"
-    
 }

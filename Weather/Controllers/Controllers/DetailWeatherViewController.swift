@@ -8,19 +8,19 @@
 
 import UIKit
 
-class DetailViewController: UIViewController {
+class DetailWeatherViewController: UIViewController {
     
     // MARK: -  @IBOutlets
     @IBOutlet weak var informationView: UIView!
     
     // MARK: - Private Properties
-    let weatherTableView = WeatherTableView()
+    let weatherTableView = DetailWeatherTableView()
     
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        view.backgroundColor = #colorLiteral(red: 0.9509845376, green: 0.985106647, blue: 1, alpha: 1)
-        
+        view.backgroundColor =  UIColor(red: 0.9509845376, green: 0.985106647, blue: 1, alpha: 1)
+    
         setupInformationView()
         setupWeatherTableView()
     }
@@ -40,6 +40,6 @@ class DetailViewController: UIViewController {
         weatherTableView.topAnchor.constraint(equalTo: informationView.bottomAnchor, constant: 50).isActive = true
         weatherTableView.leadingAnchor.constraint(equalTo: view.leadingAnchor).isActive = true
         weatherTableView.trailingAnchor.constraint(equalTo: view.trailingAnchor).isActive = true
-        weatherTableView.bottomAnchor.constraint(equalTo: view.bottomAnchor).isActive = true
+        weatherTableView.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: -40).isActive = true
     }
 }

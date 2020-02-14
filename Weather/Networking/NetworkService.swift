@@ -21,7 +21,7 @@ class NetworkService {
             
             guard let data = data else { return }
             complition(data, nil)
-           
+            
         }.resume()
     }
 }

@@ -8,7 +8,7 @@
 
 import UIKit
 
-class WeatherTableView: UITableView {
+class DetailWeatherTableView: UITableView {
     
     // MARK: - Init
     init() {
@@ -25,6 +25,9 @@ class WeatherTableView: UITableView {
         register(WeatherTableViewCell.self, forCellReuseIdentifier: WeatherTableViewCell.reuseID)
         translatesAutoresizingMaskIntoConstraints = false
         showsVerticalScrollIndicator = false
+        backgroundColor =  UIColor(red: 0.9509845376, green: 0.985106647, blue: 1, alpha: 1)
+        tableFooterView = UIView()
+        separatorStyle = .none
         delegate = self
         dataSource = self
     }
@@ -32,20 +35,28 @@ class WeatherTableView: UITableView {
 }
 
 // MARK: - UITableViewDataSource
-extension WeatherTableView: UITableViewDataSource {
+extension DetailWeatherTableView: UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return 10
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: WeatherTableViewCell.reuseID, for: indexPath)
+        let cell = tableView.dequeueReusableCell(withIdentifier: WeatherTableViewCell.reuseID, for: indexPath) as! WeatherTableViewCell
+        
+        cell.dayLabel.text = "Tue"
+        cell.iconImageView.image = UIImage(named: "water")!
         
         return cell
     }
 }
 
 // MARK: - UITableViewDelegate
-extension WeatherTableView: UITableViewDelegate {
+extension DetailWeatherTableView: UITableViewDelegate {
+    
+    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        return 65
+    }
+    
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         print(indexPath.row)
     }

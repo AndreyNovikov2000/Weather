@@ -10,6 +10,7 @@ import UIKit
 
 class WeatherCollectionView: UICollectionView {
     
+    // MARK: - Private Properties
     private let urlString = "https://api.openweathermap.org/data/2.5/forecast?q=Almaty&appid=5ad2283b07a684c9b4541b10d1739494"
     private let networkFetcher = NetworkFetcher()
     private var weatherList: MainList?
@@ -49,6 +50,7 @@ class WeatherCollectionView: UICollectionView {
     }
 }
 
+
 // MARK: - UICollectionViewDataSource
 extension WeatherCollectionView: UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
@@ -69,10 +71,12 @@ extension WeatherCollectionView: UICollectionViewDataSource {
     }
 }
 
+
 // MARK: - UICollectionViewDelegate
 extension WeatherCollectionView: UICollectionViewDelegate {
     
 }
+
 
 // MARK: - UICollectionViewDelegateFlowLayout
 extension WeatherCollectionView: UICollectionViewDelegateFlowLayout {
@@ -82,12 +86,11 @@ extension WeatherCollectionView: UICollectionViewDelegateFlowLayout {
 }
 
 
-
-
-
+// MARK: Private Methods for update UI
 extension WeatherCollectionView {
+    
     // CONVERTE TIME FROM UINIX
-     func getTimeFromUnix(unixTime: Int) -> String {
+    func getTimeFromUnix(unixTime: Int) -> String {
          let timeInSecond = TimeInterval(unixTime)
          let weatherDate = Date(timeIntervalSince1970: timeInSecond)
          let dateFormatter = DateFormatter()
@@ -97,7 +100,18 @@ extension WeatherCollectionView {
      }
     
     
-    private func getWetherIcon(condition: Int, nightTime: Bool) -> UIImage {
+    // GET TEMPERATURE
+    func convertableTemperature(country: String?, temperature: Double) -> String {
+        if country == "US" {
+            return  String(format: "%.0f", temperature * 1.8 - 459.67) + "°F"
+        } else {
+            return String(format: "%.0f", temperature - 275.15) + "°C"
+        }
+    }
+    
+    
+    // GET WEATHER ICON
+    func getWetherIcon(condition: Int, nightTime: Bool) -> UIImage {
         var imageName: String
         
         switch (condition, nightTime) {
@@ -142,7 +156,8 @@ extension WeatherCollectionView {
         return UIImage(named: imageName) ?? UIImage()
     }
     
-    private func getCurrentTime(sunrise: Int, sunset: Int) -> Bool {
+    //GET CURRENT TIME
+    func getCurrentTime(sunrise: Int, sunset: Int) -> Bool {
         var nightTime = false
         let nowTime = Date().timeIntervalSince1970
         

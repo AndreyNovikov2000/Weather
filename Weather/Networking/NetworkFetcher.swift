@@ -14,8 +14,9 @@ protocol NetworkFetcherDelegate {
 }
 
 class NetworkFetcher {
-    let networkService = NetworkService()
     var delegate: NetworkFetcherDelegate!
+    
+    private let networkService = NetworkService()
     
     func fetcData(urlString: String, complitionHendler: @escaping ((OpenWeatherMap?) -> Void)) {
         
@@ -28,6 +29,7 @@ class NetworkFetcher {
                 complitionHendler(nil)
                 return
             }
+            
             guard let data = data else { return }
             
             do {
@@ -51,7 +53,6 @@ class NetworkFetcher {
         networkService.request(url: url) { (data, error) in
             if let error = error {
                 print(error.localizedDescription)
-                self.delegate.networkFetcherDidFailedRequesting()
                 complitionHendler(nil)
                 return
             }
@@ -59,7 +60,6 @@ class NetworkFetcher {
             
             do {
                 let weather = try JSONDecoder().decode(MainList.self, from: data)
-               // self.delegate.networkFetcherDidSuccessRequesting()
                 complitionHendler(weather)
                 
             } catch let error {
@@ -70,4 +70,26 @@ class NetworkFetcher {
             
         }
     }
+    
+//    func fetchDataWithObject<T>(urlString: String, complitionHeandler: @escaping ((T?) -> Void)) -> Void where T: OpenWeatherMap {
+//        guard let url = URL(string: urlString) else { return }
+//
+//        networkService.request(url: url) { (data, error) in
+//            if let error = error {
+//                print(error.localizedDescription)
+//                complitionHeandler(nil)
+//                return
+//            }
+//
+//            guard let data = data else { return }
+//
+//            do {
+//                let weather = try JSONDecoder().decode(T.self, from: data)
+//                complitionHeandler(weather)
+//
+//            } catch let error {
+//                print(error.localizedDescription)
+//            }
+//        }
+//    }
 }
