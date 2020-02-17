@@ -1,11 +1,3 @@
-//
-//  Helper.swift
-//  Weather
-//
-//  Created by Andrey Novikov on 1/26/20.
-//  Copyright © 2020 Andrey Novikov. All rights reserved.
-//
-
 /*
 
 let urlString = URL(string: url)!
@@ -91,6 +83,9 @@ override func viewDidLoad() {
         }
     }.resume()
 */
+
+
+
 
 /* 
  https://api.openweathermap.org/data/2.5/weather?q=Almaty,forecast?id=524901&appid=5ad2283b07a684c9b4541b10d1739494 //requesting name

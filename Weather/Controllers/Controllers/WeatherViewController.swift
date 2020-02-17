@@ -10,26 +10,24 @@ import UIKit
 
 class WeatherViewController: UIViewController {
     
-    // MARK: - IBOutlets
+    // MARK: - @IBOutlets
     @IBOutlet weak var mainStackView: UIStackView!
     @IBOutlet weak var cityLabel: UILabel!
     @IBOutlet weak var dateLabel: UILabel!
     @IBOutlet weak var iconImageView: UIImageView!
     @IBOutlet weak var temperatureLabel: UILabel!
     
-    
     @IBOutlet weak var sunriseLabel: UILabel!
     @IBOutlet weak var sunsetLabel: UILabel!
     @IBOutlet weak var windLabel: UILabel!
     @IBOutlet weak var humidityLabel: UILabel!
-    
+
     
     // MARK: - Private Properties
-    private let baseUrlString = "https://api.openweathermap.org/data/2.5/weather?q=,forecast?id=524901&appid=5ad2283b07a684c9b4541b10d1739494"
     private let networkFetcher = NetworkFetcher()
-    
     private let activityIndicator = UIActivityIndicatorView()
     private let weatherCollectionView = WeatherCollectionView()
+    
     
     // MARK: - Controllers Methods
     override func viewDidLoad() {
@@ -40,6 +38,18 @@ class WeatherViewController: UIViewController {
         
         setupWeatherCollectionView()
         setupActivityIndicator()
+    }
+    
+    
+    // MARK: - @IBActions
+    @IBAction func nextFiveDaysButtonPressed(_ sender: Any) {
+        let vc = storyboard?.instantiateViewController(identifier: "DetailWeatherViewController") as! DetailWeatherViewController
+        vc.weatherTableView.weather = weatherCollectionView.weatherList
+        present(vc, animated: true, completion: nil)
+    }
+    
+    @IBAction func searchButtonPressed(_ sender: Any) {
+        searchCityWithAlertController()
     }
 }
 
@@ -68,6 +78,32 @@ extension WeatherViewController {
         alert.addAction(okAction)
         present(alert, animated: true, completion: nil)
     }
+    
+    private func searchCityWithAlertController() {
+        let alertController = UIAlertController(title: "Search city", message: "", preferredStyle: .alert)
+        let cancelButton = UIAlertAction(title: "Cancel", style: .cancel, handler: nil)
+        let okButton = UIAlertAction(title: "Ok", style: .default) { [weak self] action in
+            guard let text = alertController.textFields?.first?.text else { return }
+            print(text)
+            self?.updateUI(with: text)
+            self?.weatherCollectionView.updateWeatherCollectionView(with: text)
+        }
+        
+        alertController.addAction(okButton)
+        alertController.addAction(cancelButton)
+        
+        alertController.addTextField { textField in
+            textField.borderStyle = .roundedRect
+            textField.textAlignment = .center
+            textField.contentVerticalAlignment = .center
+            textField.contentHorizontalAlignment = .center
+            textField.clearButtonMode = .whileEditing
+            textField.placeholder = "Search city"
+        }
+        
+        present(alertController, animated: true, completion: nil)
+    }
+
 }
 
 // MARK: - Fetch data methods
@@ -80,7 +116,12 @@ extension WeatherViewController {
         
         networkFetcher.fetcData(urlString: urlString) { (weather) in
             DispatchQueue.main.async { [unowned self] in
-                guard let weather = weather else { return }
+                guard let weather = weather else {
+                    self.showInformationAlert(with: "Error", "The city does not does exist")
+                    self.activityIndicator.stopAnimating()
+                    return
+                }
+                
                 self.loadDAataInUI(with: weather)
             }
         }
@@ -88,17 +129,17 @@ extension WeatherViewController {
     
     private func loadDAataInUI(with weather: OpenWeatherMap) {
         //GET MAIN UI
-        iconImageView.image = weatherCollectionView.getWetherIcon(condition: weather.weather[0].id,
-                                                                  nightTime: weatherCollectionView.getCurrentTime(sunrise: weather.sys.sunrise,
+        iconImageView.image = UIImage.getWetherIcon(condition: weather.weather[0].id,
+                                                                  nightTime: Bool.isCurrentTime(sunrise: weather.sys.sunrise,
                                                                                      sunset: weather.sys.sunset))
         
-        temperatureLabel.text = weatherCollectionView.convertableTemperature(country: weather.sys.country,temperature: weather.main.temp)
-        dateLabel.text = weatherCollectionView.getTimeFromUnix(unixTime: weather.dt)
+        temperatureLabel.text = String.convertableTemperature(country: weather.sys.country,temperature: weather.main.temp)
+        dateLabel.text = String().getTimeFromUnix(unixTime:  weather.dt)
         cityLabel.text = weather.name
         
         //GET DETAILS UI
-        sunsetLabel.text = "\(weatherCollectionView.getTimeFromUnix(unixTime: weather.sys.sunset))"
-        sunriseLabel.text = "\(weatherCollectionView.getTimeFromUnix(unixTime: weather.sys.sunrise))"
+        sunsetLabel.text = "\(String().getTimeFromUnix(unixTime: weather.sys.sunset))"
+        sunriseLabel.text = "\(String().getTimeFromUnix(unixTime: weather.sys.sunrise))"
         windLabel.text = "\(weather.wind.speed) m/s"
         humidityLabel.text = "\(weather.main.humidity) %"
     }

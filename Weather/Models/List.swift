@@ -10,7 +10,7 @@ import Foundation
 
 struct MainList: Decodable {
     let cod: String
-    let list: [List]
+    var list: [List]
     let city: City
 }
 
@@ -18,9 +18,11 @@ struct List: Decodable {
     let dt: Int
     let main: Main
     let weather: [Weather]
+    let dt_txt: String
 }
 
 struct City: Decodable {
     let sunrise: Int
     let sunset: Int
+    let country: String
 }

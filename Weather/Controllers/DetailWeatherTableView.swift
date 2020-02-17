@@ -10,6 +10,9 @@ import UIKit
 
 class DetailWeatherTableView: UITableView {
     
+    // MARK: - Public Properties
+    var weather: MainList?
+    
     // MARK: - Init
     init() {
         super.init(frame: .zero, style: .plain)
@@ -25,26 +28,33 @@ class DetailWeatherTableView: UITableView {
         register(WeatherTableViewCell.self, forCellReuseIdentifier: WeatherTableViewCell.reuseID)
         translatesAutoresizingMaskIntoConstraints = false
         showsVerticalScrollIndicator = false
-        backgroundColor =  UIColor(red: 0.9509845376, green: 0.985106647, blue: 1, alpha: 1)
-        tableFooterView = UIView()
-        separatorStyle = .none
         delegate = self
         dataSource = self
     }
-    
 }
 
 // MARK: - UITableViewDataSource
 extension DetailWeatherTableView: UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return 10
+        guard let count = weather?.list.count else { return 0 }
+        return count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: WeatherTableViewCell.reuseID, for: indexPath) as! WeatherTableViewCell
         
-        cell.dayLabel.text = "Tue"
-        cell.iconImageView.image = UIImage(named: "water")!
+        guard let item = weather else { return WeatherTableViewCell() }
+        
+        cell.humidityLabel.text = "\(item.list[indexPath.row].main.humidity)%"
+        cell.dayLabel.text = String(item.list[indexPath.row].dt_txt).getDate()
+        cell.timeLabel.text = String(item.list[indexPath.row].dt_txt).getTime()
+        
+        
+        cell.iconImageView.image = UIImage.getWetherIcon(condition: item.list[indexPath.row].weather[0].id,
+                                                 nightTime: Bool.isCurrentTime(sunrise: item.city.sunrise, sunset: item.city.sunset))
+        
+        cell.temperatureLabel.text = String.convertableTemperature(country: item.city.country,
+                                                            temperature: item.list[indexPath.row].main.temp)
         
         return cell
     }
@@ -58,8 +68,11 @@ extension DetailWeatherTableView: UITableViewDelegate {
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        deselectRow(at: indexPath, animated: true)
         print(indexPath.row)
     }
 }
+
+
 
 
