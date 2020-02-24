@@ -87,13 +87,36 @@ override func viewDidLoad() {
 
 
 
-/* 
- https://api.openweathermap.org/data/2.5/weather?q=Almaty,forecast?id=524901&appid=5ad2283b07a684c9b4541b10d1739494 //requesting name
- https://api.openweathermap.org/data/2.5/weather?lat=76.95&lon=43.25&appid=5ad2283b07a684c9b4541b10d1739494 // requesting lat lon
- 
- https://api.openweathermap.org/data/2.5/forecast?q=Almaty&appid=5ad2283b07a684c9b4541b10d1739494 // requesting name for 5 days every 3 hour
- https://api.openweathermap.org/data/2.5/forecast?lat=76.95&lon=43.25&appid=5ad2283b07a684c9b4541b10d1739494 // requesting lat lon for 5 days every 3 hour
+/*
+ //    func fetchDataWithObject<T>(urlString: String, complitionHeandler: @escaping ((T?) -> Void)) -> Void where T: OpenWeatherMap {
+ //        guard let url = URL(string: urlString) else { return }
+ //
+ //        networkService.request(url: url) { (data, error) in
+ //            if let error = error {
+ //                print(error.localizedDescription)
+ //                complitionHeandler(nil)
+ //                return
+ //            }
+ //
+ //            guard let data = data else { return }
+ //
+ //            do {
+ //                let weather = try JSONDecoder().decode(T.self, from: data)
+ //                complitionHeandler(weather)
+ //
+ //            } catch let error {
+ //                print(error.localizedDescription)
+ //            }
+ //        }
+ //    }
  */
 
 
 
+/*
+https://api.openweathermap.org/data/2.5/weather?q=Almaty,forecast?id=524901&appid=5ad2283b07a684c9b4541b10d1739494 //requesting name
+https://api.openweathermap.org/data/2.5/weather?lat=76.95&lon=43.25&appid=5ad2283b07a684c9b4541b10d1739494 // requesting lat lon
+
+https://api.openweathermap.org/data/2.5/forecast?q=Almaty&appid=5ad2283b07a684c9b4541b10d1739494 // requesting name for 5 days every 3 hour
+https://api.openweathermap.org/data/2.5/forecast?lat=76.95&lon=43.25&appid=5ad2283b07a684c9b4541b10d1739494 // requesting lat lon for 5 days every 3 hour
+*/

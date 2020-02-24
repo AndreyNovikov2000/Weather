@@ -11,6 +11,7 @@
 		0C24558B23E8780800AD2FEC /* WeatherCollectionViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 0C24558A23E8780800AD2FEC /* WeatherCollectionViewCell.xib */; };
 		0C24558E23E882C800AD2FEC /* Constant.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C24558D23E882C800AD2FEC /* Constant.swift */; };
 		0C452D9D23ED9EFF00381B6B /* List.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C452D9C23ED9EFF00381B6B /* List.swift */; };
+		0C5E17342403DD02006C0B16 /* Location.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C5E17332403DD02006C0B16 /* Location.swift */; };
 		0C68DEA323DC3CE100B345E1 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C68DEA223DC3CE100B345E1 /* AppDelegate.swift */; };
 		0C68DEA523DC3CE100B345E1 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C68DEA423DC3CE100B345E1 /* SceneDelegate.swift */; };
 		0C68DEAA23DC3CE100B345E1 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 0C68DEA823DC3CE100B345E1 /* Main.storyboard */; };
@@ -36,6 +37,7 @@
 		0C24558A23E8780800AD2FEC /* WeatherCollectionViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = WeatherCollectionViewCell.xib; sourceTree = "<group>"; };
 		0C24558D23E882C800AD2FEC /* Constant.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constant.swift; sourceTree = "<group>"; };
 		0C452D9C23ED9EFF00381B6B /* List.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = List.swift; sourceTree = "<group>"; };
+		0C5E17332403DD02006C0B16 /* Location.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Location.swift; sourceTree = "<group>"; };
 		0C68DE9F23DC3CE100B345E1 /* Weather.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Weather.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		0C68DEA223DC3CE100B345E1 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		0C68DEA423DC3CE100B345E1 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -87,6 +89,14 @@
 			path = Constants;
 			sourceTree = "<group>";
 		};
+		0C5E17322403DCD1006C0B16 /* LocationManager */ = {
+			isa = PBXGroup;
+			children = (
+				0C5E17332403DD02006C0B16 /* Location.swift */,
+			);
+			path = LocationManager;
+			sourceTree = "<group>";
+		};
 		0C68DE9623DC3CE100B345E1 = {
 			isa = PBXGroup;
 			children = (
@@ -111,11 +121,11 @@
 				0C6DD62A23E0280F00A70CAE /* Controllers */,
 				0C6BBE0823DC4585008E0FBE /* Models */,
 				0C6DD62523DD8A1B00A70CAE /* Networking */,
+				0C5E17322403DCD1006C0B16 /* LocationManager */,
 				0C24558C23E882A600AD2FEC /* Constants */,
 				0CB764B823DD75A80096DA2F /* Extensions */,
+				0CFBD1FB23FB194000351276 /* IB  */,
 				0C68DEAB23DC3CE200B345E1 /* Assets.xcassets */,
-				0C68DEA823DC3CE100B345E1 /* Main.storyboard */,
-				0C68DEAD23DC3CE200B345E1 /* LaunchScreen.storyboard */,
 				0C68DEB023DC3CE200B345E1 /* Info.plist */,
 			);
 			path = Weather;
@@ -186,6 +196,15 @@
 				0C6DD62823DF036B00A70CAE /* Constants.swift */,
 			);
 			path = Utilite;
+			sourceTree = "<group>";
+		};
+		0CFBD1FB23FB194000351276 /* IB  */ = {
+			isa = PBXGroup;
+			children = (
+				0C68DEA823DC3CE100B345E1 /* Main.storyboard */,
+				0C68DEAD23DC3CE200B345E1 /* LaunchScreen.storyboard */,
+			);
+			path = "IB ";
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -274,6 +293,7 @@
 				0C6BBE0723DC457E008E0FBE /* OpenWeatherMap.swift in Sources */,
 				0C24558823E872D000AD2FEC /* WeatherCollectionViewCell.swift in Sources */,
 				0C24558E23E882C800AD2FEC /* Constant.swift in Sources */,
+				0C5E17342403DD02006C0B16 /* Location.swift in Sources */,
 				0C7FF0EA23F19542009AB003 /* DetailWeatherTableView.swift in Sources */,
 				0CFBD1FA23FB15B500351276 /* Extensions for Bool.swift in Sources */,
 				0CFBD1F823FB128800351276 /* Extension for String.swift in Sources */,

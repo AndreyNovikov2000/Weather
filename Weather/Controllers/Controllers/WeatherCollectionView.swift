@@ -25,9 +25,7 @@ class WeatherCollectionView: UICollectionView {
         layout.scrollDirection = .horizontal
         layout.minimumLineSpacing = Constants.minimumSpacing
         
-        updateWeatherCollectionView(with: "Almaty")
         setupWeatherCollectionView()
-        
     }
     
     required init?(coder: NSCoder) {

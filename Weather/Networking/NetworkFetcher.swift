@@ -67,29 +67,6 @@ class NetworkFetcher {
                 complitionHendler(nil)
                 return
             }
-            
         }
     }
-    
-//    func fetchDataWithObject<T>(urlString: String, complitionHeandler: @escaping ((T?) -> Void)) -> Void where T: OpenWeatherMap {
-//        guard let url = URL(string: urlString) else { return }
-//
-//        networkService.request(url: url) { (data, error) in
-//            if let error = error {
-//                print(error.localizedDescription)
-//                complitionHeandler(nil)
-//                return
-//            }
-//
-//            guard let data = data else { return }
-//
-//            do {
-//                let weather = try JSONDecoder().decode(T.self, from: data)
-//                complitionHeandler(weather)
-//
-//            } catch let error {
-//                print(error.localizedDescription)
-//            }
-//        }
-//    }
 }
