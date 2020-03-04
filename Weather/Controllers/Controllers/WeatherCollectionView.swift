@@ -26,6 +26,7 @@ class WeatherCollectionView: UICollectionView {
         layout.minimumLineSpacing = Constants.minimumSpacing
         
         setupWeatherCollectionView()
+        updateWeatherCollectionView(with: "Almaty")
     }
     
     required init?(coder: NSCoder) {

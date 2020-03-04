@@ -69,7 +69,6 @@ extension DetailWeatherTableView: UITableViewDelegate {
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         deselectRow(at: indexPath, animated: true)
-        print(indexPath.row)
     }
 }
 

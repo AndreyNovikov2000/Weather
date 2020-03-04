@@ -40,6 +40,8 @@ class WeatherViewController: UIViewController {
         
         setupWeatherCollectionView()
         setupActivityIndicator()
+        
+        updateUI(with: "Almaty")
     }
     
     
@@ -180,7 +182,7 @@ extension WeatherViewController: CLLocationManagerDelegate {
                 return
             }
             self.updateUI(with: city)
-            self.weatherCollectionView.updateWeatherCollectionView(with: city)
+           // self.weatherCollectionView.updateWeatherCollectionView(with: city)
         }
     }
     
